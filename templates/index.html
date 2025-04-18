@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart File Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Smart File Converter</h2>
+        <form id="uploadForm" action="/convert" method="post" enctype="multipart/form-data">
+            <!-- Conversion Type Selection -->
+            <div class="conversion-type">
+                <label for="conversionType">Select Conversion Type:</label>
+                <select name="conversionType" id="conversionType" required>
+                    <option value="">--- Select Conversion Type ---</option>
+                    <option value="pdf">📝 Word to PDF</option>
+                    <option value="docx">📄 PDF to Word</option>
+                    <option value="img2pdf">🖼️ Image to PDF</option>
+                    <option value="mergepdf">📚 Merge PDFs (Upload two or more files)</option>
+                    <option value="txt2pdf">📃 Text to PDF</option>
+                    <option value="compresspdf">🗜️ Compress PDF</option>
+                    <option value="imgconvert">🎨 Convert Image (JPG/PNG)</option>
+                    <option value="excel2pdf">📊 Excel to PDF</option>
+                    <option value="ppt2pdf">📽️ PowerPoint to PDF</option>
+                    <option value="pdf2img">🖼️ PDF to Images</option>
+                </select>
+            </div>
+            
+            <!-- File Upload Section -->
+            <div class="file-upload">
+                <label for="fileInput">Upload Files:</label>
+                <div class="dropzone" id="dropzone">
+                    📁Drop files here or click to upload
+                    <input type="file" name="file" id="fileInput" multiple style="display:none;" required>
+                </div>
+                <div id="fileNames"></div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit">Convert</button>
+            <div id="sizeInfo" style="margin-top: 10px; font-weight: bold;"></div>
+
+        </form>
+        
+        <!-- Conversion Spinner -->
+        <div id="spinner">Converting... Please wait.</div>
+        
+        <!-- Download History -->
+        <div id="history">
+            <strong>Recent Downloads:</strong>
+            <div id="historyLinks"></div>
+            <button id="clearHistory" style="margin-top:10px;">Clear History</button>
+        </div>
+        
+    </div>
+
+    <script>
+      const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const fileNames = document.getElementById('fileNames');
+const form = document.getElementById('uploadForm');
+const spinner = document.getElementById('spinner');
+const historyLinks = document.getElementById('historyLinks');
+
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', e => {
+    e.preventDefault();
+    dropzone.classList.add('dragover');
+});
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+dropzone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropzone.classList.remove('dragover');
+    fileInput.files = e.dataTransfer.files;
+    updateFileNames();
+});
+fileInput.addEventListener('change', updateFileNames);
+
+function updateFileNames() {
+    fileNames.innerHTML = Array.from(fileInput.files)
+        .map(f => `• ${f.name}`).join('<br>');
+}
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault(); 
+    spinner.style.display = 'block'; 
+    form.style.opacity = 0.5;
+
+    const formData = new FormData(form);
+    fetch('/convert', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Server Error: ${response.statusText}`);
+        }
+        return response.blob();
+    })
+    .then(blob => {
+        spinner.style.display = 'none';
+        form.style.opacity = 1;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'converted_file';
+        a.click();
+
+        let downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
+        downloads.push(url);
+        localStorage.setItem('downloads', JSON.stringify(downloads));
+        updateHistory();
+    })
+    .catch(error => {
+        console.error('Error during conversion:', error); 
+        spinner.style.display = 'none'; 
+        form.style.opacity = 1;
+        alert('An error occurred during the conversion. Please try again.');
+    });
+});
+
+function updateHistory() {
+    let links = JSON.parse(localStorage.getItem('downloads') || '[]');
+    historyLinks.innerHTML = links.slice(-5).reverse().map(
+        link => `<a href="${link}" download>${link.split('/').pop()}</a>`
+    ).join('');
+}
+
+document.getElementById('clearHistory').addEventListener('click', () => {
+    localStorage.removeItem('downloads');
+    historyLinks.innerHTML = '';
+});
+
+    </script>
+</body>
+</html>

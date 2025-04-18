@@ -1,0 +1,158 @@
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #34198d, #4d6fa5);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Container for the Form */
+.container {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+}
+
+/* Header */
+h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Conversion Type Dropdown */
+.conversion-type {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: left;
+  font-size: 16px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+/* Dropzone Styling */
+.dropzone {
+  border: 2px dashed #007bff;
+  padding: 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
+  color: #007bff;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.dropzone:hover {
+  background-color: #a4abf9;
+}
+
+.dropzone.dragover {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+#fileNames {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Button */
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Spinner */
+#spinner {
+  display: none;
+  margin-top: 20px;
+  font-size: 18px;
+  color: #007bff;
+}
+
+/* Download History */
+#history {
+  margin-top: 30px;
+  text-align: left;
+}
+
+#history a {
+  color: #007bff;
+  text-decoration: none;
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+#history a:hover {
+  text-decoration: underline;
+}
+.custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.custom-select {
+  width: 100%;
+  appearance: none;
+  padding: 12px 16px;
+  border: 2px solid #4f46e5;
+  border-radius: 12px;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  font-size: 16px;
+  font-weight: 500;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.custom-select:hover {
+  background-color: #e0e7ff;
+}
+
+.custom-select:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.custom-arrow {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 18px;
+  color: #6b7280;
+}
