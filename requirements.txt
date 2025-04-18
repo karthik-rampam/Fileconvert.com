@@ -1,9 +1,2 @@
 Flask
-pdf2docx
-docx2pdf
-PyPDF2
-fpdf
-Pillow
-uuid
-pywin32; platform_system == "Windows"
 gunicorn
